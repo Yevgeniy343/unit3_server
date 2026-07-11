@@ -23,10 +23,15 @@ async function update() {
 
     ctx.beginPath();
 
+    const SCALE = 4;
+
     for (let i = 0; i < bytes.length; i += 2) {
       const x = ((i / 2) * WIDTH) / 8192;
 
-      const y = HEIGHT - (bytes[i] / 255) * HEIGHT;
+      //   const y = HEIGHT - (bytes[i] / 255) * HEIGHT;
+      const center = HEIGHT / 2;
+
+      const y = center - (bytes[i] - 128) * SCALE;
 
       if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
