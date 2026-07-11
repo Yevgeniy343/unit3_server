@@ -14,9 +14,6 @@ const SCALE = 6;
 // уровень "нуля"
 const OFFSET = 128;
 
-// сколько точек показываем на экране
-const VISIBLE_POINTS = 800;
-
 // =====================
 
 async function update() {
@@ -76,18 +73,16 @@ async function update() {
     ctx.lineWidth = 2;
     ctx.beginPath();
 
-    const points = Math.min(VISIBLE_POINTS, bytes.length / 2);
+    const center = HEIGHT / 2;
 
-    for (let p = 0; p < points; p++) {
-      const byteIndex = p * 2;
+    for (let i = 0; i < bytes.length; i += 2) {
+      const x = ((i / 2) * WIDTH) / 8192;
 
-      const value = bytes[byteIndex];
-
-      const x = (p / (points - 1)) * WIDTH;
+      const value = bytes[i];
 
       const y = center - (value - OFFSET) * SCALE;
 
-      if (p === 0) ctx.moveTo(x, y);
+      if (i === 0) ctx.moveTo(x, y);
       else ctx.lineTo(x, y);
     }
 
