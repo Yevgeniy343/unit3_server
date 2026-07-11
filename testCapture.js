@@ -1,14 +1,24 @@
+import express from "express";
 import { spawn } from "node:child_process";
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+
+const app = express();
 
 const captureBinary = "/home/ssdt/Desktop/unit3/capture/build/capture";
 
-const FRAME_SIZE = 16384;
 const HEADER_SIZE = 4;
-
-const proc = spawn("sudo", [captureBinary]);
 
 let buffer = Buffer.alloc(0);
 let frameNumber = 0;
+
+// здесь всегда хранится последний кадр
+let lastFrame = null;
+
+const proc = spawn("sudo", [captureBinary]);
 
 proc.stderr.on("data", (data) => {
   process.stderr.write(data.toString());
@@ -19,54 +29,48 @@ proc.on("error", (err) => {
 });
 
 proc.stdout.on("data", (chunk) => {
-  // Добавляем новые данные
   buffer = Buffer.concat([buffer, chunk]);
 
   while (true) {
-    // Ждем заголовок
     if (buffer.length < HEADER_SIZE) {
       return;
     }
 
-    // Размер кадра
     const frameLength = buffer.readUInt32LE(0);
 
-    // Ждем весь кадр
     if (buffer.length < HEADER_SIZE + frameLength) {
       return;
     }
 
-    // Получаем кадр
     const frame = buffer.subarray(HEADER_SIZE, HEADER_SIZE + frameLength);
 
-    // Убираем обработанный кадр
     buffer = buffer.subarray(HEADER_SIZE + frameLength);
 
     frameNumber++;
 
-    const ch1 = [];
-    const ch2 = [];
+    lastFrame = Buffer.from(frame);
 
-    for (let i = 0; i < frame.length; i += 2) {
-      ch1.push(frame[i]);
-      ch2.push(frame[i + 1]);
+    if (frameNumber % 30 === 0) {
+      console.log("Frame:", frameNumber);
     }
-
-    console.clear();
-
-    console.log("Frame:", frameNumber);
-
-    console.log("CH1:", ch1.length, "points");
-
-    console.log("CH2:", ch2.length, "points");
-
-    console.log("CH1 first 20:", ch1.slice(0, 20));
-
-    console.log("CH2 first 20:", ch2.slice(0, 20));
-
-    const min = Math.min(...ch1);
-    const max = Math.max(...ch1);
-
-    console.log("CH1 min:", min, "max:", max);
   }
+});
+
+app.use(express.static(path.join(__dirname, "public")));
+
+app.get("/frame", (req, res) => {
+  if (!lastFrame) {
+    return res.status(404).end();
+  }
+
+  res.setHeader("Content-Type", "application/octet-stream");
+
+  res.send(lastFrame);
+});
+
+app.listen(3000, () => {
+  console.log();
+  console.log("Server started");
+  console.log("http://localhost:3000");
+  console.log();
 });
