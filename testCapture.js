@@ -2,52 +2,71 @@ import { spawn } from "node:child_process";
 
 const captureBinary = "/home/ssdt/Desktop/unit3/capture/build/capture";
 
-const child = spawn(captureBinary, [], {
-  stdio: ["ignore", "pipe", "pipe"],
+const FRAME_SIZE = 16384;
+const HEADER_SIZE = 4;
+
+const proc = spawn("sudo", [captureBinary]);
+
+let buffer = Buffer.alloc(0);
+let frameNumber = 0;
+
+proc.stderr.on("data", (data) => {
+  process.stderr.write(data.toString());
 });
 
-const chunks = [];
-
-child.stdout.on("data", (chunk) => {
-  chunks.push(chunk);
+proc.on("error", (err) => {
+  console.error(err);
 });
 
-child.stderr.on("data", (chunk) => {
-  process.stderr.write(`[C++] ${chunk.toString()}`);
-});
+proc.stdout.on("data", (chunk) => {
+  // Добавляем новые данные
+  buffer = Buffer.concat([buffer, chunk]);
 
-child.on("error", (error) => {
-  console.error("Не удалось запустить C++:", error);
-});
+  while (true) {
+    // Ждем заголовок
+    if (buffer.length < HEADER_SIZE) {
+      return;
+    }
 
-child.on("close", (code) => {
-  if (code !== 0) {
-    console.error(`C++ завершился с кодом ${code}`);
-    return;
+    // Размер кадра
+    const frameLength = buffer.readUInt32LE(0);
+
+    // Ждем весь кадр
+    if (buffer.length < HEADER_SIZE + frameLength) {
+      return;
+    }
+
+    // Получаем кадр
+    const frame = buffer.subarray(HEADER_SIZE, HEADER_SIZE + frameLength);
+
+    // Убираем обработанный кадр
+    buffer = buffer.subarray(HEADER_SIZE + frameLength);
+
+    frameNumber++;
+
+    const ch1 = [];
+    const ch2 = [];
+
+    for (let i = 0; i < frame.length; i += 2) {
+      ch1.push(frame[i]);
+      ch2.push(frame[i + 1]);
+    }
+
+    console.clear();
+
+    console.log("Frame:", frameNumber);
+
+    console.log("CH1:", ch1.length, "points");
+
+    console.log("CH2:", ch2.length, "points");
+
+    console.log("CH1 first 20:", ch1.slice(0, 20));
+
+    console.log("CH2 first 20:", ch2.slice(0, 20));
+
+    const min = Math.min(...ch1);
+    const max = Math.max(...ch1);
+
+    console.log("CH1 min:", min, "max:", max);
   }
-
-  const rawData = Buffer.concat(chunks);
-
-  console.log("Получено байт:", rawData.length);
-
-  if (rawData.length !== 16384) {
-    console.error(`Неверный размер: ${rawData.length}, ожидалось 16384`);
-    return;
-  }
-
-  const ch1 = [];
-  const ch2 = [];
-
-  for (let index = 0; index + 1 < rawData.length; index += 2) {
-    ch1.push(rawData[index]);
-    ch2.push(rawData[index + 1]);
-  }
-
-  console.log("CH1 points:", ch1.length);
-  console.log("CH2 points:", ch2.length);
-
-  console.log("CH1 first 20:", ch1.slice(0, 20));
-  console.log("CH2 first 20:", ch2.slice(0, 20));
-
-  console.log("CH1 min:", Math.min(...ch1), "max:", Math.max(...ch1));
 });
