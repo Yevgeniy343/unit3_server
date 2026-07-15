@@ -9,6 +9,7 @@ const __dirname = path.dirname(__filename);
 const app = express();
 
 const captureBinary = "/home/ssdt/Desktop/unit3/capture/build/capture";
+// const captureBinary = "/home/ujin/Desktop/apps/unit3/capture/build/capture";
 
 const HEADER_SIZE = 4;
 

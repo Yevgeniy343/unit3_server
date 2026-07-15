@@ -1,16 +1,19 @@
-// server.js
 import express from "express";
 
-const router = express.Router();
+import captureRoutes from "./routes/capture.js";
+import modbusRoutes from "./routes/modbus.js";
 
-router.post("/capture", (req, res) => {
-  console.log("Получены данные");
+import { startWSServer } from "./wsServer.js";
 
-  console.log(req.body.length);
+const app = express();
 
-  console.log(req.body.slice(0, 20));
+app.use(express.json());
 
-  res.sendStatus(200);
+app.use(captureRoutes);
+app.use(modbusRoutes);
+
+startWSServer();
+
+app.listen(3000, () => {
+  console.log("HTTP API: http://localhost:3000");
 });
-
-export default router;
