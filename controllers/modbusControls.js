@@ -28,16 +28,16 @@ export async function getAin0() {
 
 export async function getAin2() {
   const { data } = await modbusQ.run(
-    () => client.readInputRegisters(REG.INPUT.AIN2, 1),
+    () => client.readInputRegisters(REG.INPUT.AIN2, 2),
     { label: "getAin2" },
   );
-  return data[0];
+  return registersToFloatLH(data[0], data[1]);
 }
 
 export async function getAin4() {
   const { data } = await modbusQ.run(
-    () => client.readInputRegisters(REG.INPUT.AIN4, 1),
+    () => client.readInputRegisters(REG.INPUT.AIN4, 2),
     { label: "getAin4" },
   );
-  return data[0];
+  return registersToFloatLH(data[0], data[1]);
 }

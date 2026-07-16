@@ -7,8 +7,8 @@ import fs from "fs";
 const PORT = "/dev/ttyUSB0";
 // const PORT = "COM2";
 
-// const BAUD = 115200;
-const BAUD = 9600;
+const BAUD = 115200;
+// const BAUD = 9600;
 
 const client = new ModbusRTU();
 
