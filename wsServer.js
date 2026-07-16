@@ -26,13 +26,13 @@ export function startWSServer() {
 
     try {
       const ain0 = await getAin0();
-      // const ain2 = await getAin2();
-      // const ain4 = await getAin4();
+      const ain2 = await getAin2();
+      const ain4 = await getAin4();
 
       const payload = JSON.stringify({
         sampleTemp: ain0,
-        // airTemp: ain4,
-        // airHum: ain2,
+        airTemp: ain4,
+        airHum: ain2,
         // sampleTemp: 25.5,
         // airTemp: 22.3,
         // airHum: 55.2,
