@@ -11,13 +11,6 @@ function registersToFloatLH(lo, hi) {
 }
 
 /* ================== INPUT ================== */
-// export async function getAin0() {
-//   const { data } = await modbusQ.run(
-//     () => client.readInputRegisters(REG.INPUT.AIN0, 1),
-//     { label: "getAin0" },
-//   );
-//   return data[0];
-// }
 export async function getAin0() {
   const { data } = await modbusQ.run(
     () => client.readInputRegisters(REG.INPUT.AIN0, 2),
@@ -40,4 +33,25 @@ export async function getAin4() {
     { label: "getAin4" },
   );
   return registersToFloatLH(data[0], data[1]);
+}
+
+/* ================== COIL ================== */
+export async function setHeatEnable(state) {
+  console.log("setHeatEnable", state);
+
+  await modbusQ.run(() => client.writeCoil(REG.COIL.HEAT_ENABLE, state), {
+    label: "setHeatEnable",
+  });
+  console.log(`setHeatEnable  ${state}`);
+  return state;
+}
+
+export async function setHumEnable(state) {
+  console.log("setHumEnable", state);
+
+  await modbusQ.run(() => client.writeCoil(REG.COIL.HUM_ENABLE, state), {
+    label: "setHumEnable",
+  });
+  console.log(`setHumEnable  ${state}`);
+  return state;
 }

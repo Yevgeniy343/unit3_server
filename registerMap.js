@@ -3,11 +3,14 @@
 export const REG = {
   HOLDING: {},
   INPUT: {
-    AIN0: 0, // uint16
-    AIN2: 2, // uint16
-    AIN4: 4, // uint16
+    AIN0: 0,
+    AIN2: 2,
+    AIN4: 4,
   },
-  COIL: {},
+  COIL: {
+    HEAT_ENABLE: 0, // bool
+    HUM_ENABLE: 2, // bool
+  },
 };
 
 export const STAGE = {};
