@@ -22,7 +22,7 @@ export function startWSServer() {
 
   setInterval(async () => {
     if (clients.size === 0) return;
-    console.log("vef");
+    console.log("setInterval");
 
     try {
       const ain0 = await getAin0();
