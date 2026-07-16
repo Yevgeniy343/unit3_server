@@ -33,7 +33,7 @@ export function startWSServer() {
         sampleTemp: ain0,
         airTemp: ain4,
         airHum: ain2,
-        // sampleTemp: 25.5,
+        // sampleTemp: 59.5,
         // airTemp: 22.3,
         // airHum: 55.2,
       });

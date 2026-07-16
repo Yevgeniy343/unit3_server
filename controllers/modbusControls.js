@@ -10,6 +10,12 @@ function registersToFloatLH(lo, hi) {
   return buf.readFloatBE(0);
 }
 
+function floatToRegistersLH(value) {
+  const buf = Buffer.allocUnsafe(4);
+  buf.writeFloatBE(value, 0);
+  return [buf.readUInt16BE(2), buf.readUInt16BE(0)];
+}
+
 /* ================== INPUT ================== */
 export async function getAin0() {
   const { data } = await modbusQ.run(
@@ -46,6 +52,16 @@ export async function setHeatEnable(state) {
   return state;
 }
 
+export async function setGraterEnable(state) {
+  console.log("setGraterEnable", state);
+
+  await modbusQ.run(() => client.writeCoil(REG.COIL.GRATER_ENABLE, state), {
+    label: "setGraterEnable",
+  });
+  console.log(`setGraterEnable  ${state}`);
+  return state;
+}
+
 export async function setHumEnable(state) {
   console.log("setHumEnable", state);
 
@@ -54,4 +70,17 @@ export async function setHumEnable(state) {
   });
   console.log(`setHumEnable  ${state}`);
   return state;
+}
+
+/* ================== HOLDING ================== */
+export async function setStrokeLength(value) {
+  console.log("setStrokeLength", value);
+
+  const [lo, hi] = floatToRegistersLH(value);
+  await modbusQ.run(
+    () => client.writeRegisters(REG.HOLDING.STROKE_LENGTH, [lo, hi]),
+    { label: "setStrokeLength" },
+  );
+  console.log(`setStrokeLength updated to ${value}`);
+  return value;
 }
