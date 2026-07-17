@@ -41,6 +41,14 @@ export async function getAin4() {
   return registersToFloatLH(data[0], data[1]);
 }
 
+export async function getAin8() {
+  const { data } = await modbusQ.run(
+    () => client.readInputRegisters(REG.INPUT.AIN4, 2),
+    { label: "getAin8" },
+  );
+  return registersToFloatLH(data[0], data[1]);
+}
+
 /* ================== COIL ================== */
 export async function setHeatEnable(state) {
   console.log("setHeatEnable", state);

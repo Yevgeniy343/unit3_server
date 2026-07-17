@@ -1,6 +1,11 @@
 // wsServer.js
 import { WebSocketServer } from "ws";
-import { getAin0, getAin2, getAin4 } from "./controllers/modbusControls.js";
+import {
+  getAin0,
+  getAin2,
+  getAin4,
+  getAin8,
+} from "./controllers/modbusControls.js";
 
 const WS_PORT = 8080;
 
