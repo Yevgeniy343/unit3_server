@@ -8,6 +8,7 @@ export const REG = {
     AIN0: 0,
     AIN2: 2,
     AIN4: 4,
+    AIN8: 8,
   },
   COIL: {
     HEAT_ENABLE: 0, // bool

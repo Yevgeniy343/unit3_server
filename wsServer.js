@@ -28,14 +28,17 @@ export function startWSServer() {
       const ain0 = await getAin0();
       const ain2 = await getAin2();
       const ain4 = await getAin4();
+      const ain8 = await getAin8();
 
       const payload = JSON.stringify({
         sampleTemp: ain0,
         airTemp: ain4,
         airHum: ain2,
+        rFilm: ain8,
         // sampleTemp: 59.5,
         // airTemp: 22.3,
         // airHum: 55.2,
+        // rFilm: 50.3,
       });
 
       console.log("payload:", payload);
