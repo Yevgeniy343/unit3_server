@@ -41,8 +41,8 @@ export function startWSServer() {
         airHum: ain2,
         rFilm: ain8,
         // sampleTemp: 59.5,
-        // airTemp: 28.3,
-        // airHum: 58.2,
+        // airTemp: 26.3,
+        // airHum: 56.2,
         // rFilm: 50.3,
       });
 
