@@ -36,21 +36,21 @@ export function startWSServer() {
 
     try {
       //!
-      // const currentRFilm = await getAin8();
-      // rFilmHistory.push(currentRFilm);
+      const currentRFilm = await getAin8();
+      rFilmHistory.push(currentRFilm);
 
-      // if (rFilmHistory.length > 10) {
-      //   rFilmHistory.shift();
-      // }
+      if (rFilmHistory.length > 10) {
+        rFilmHistory.shift();
+      }
 
-      // const averageRFilm =
-      //   rFilmHistory.reduce((sum, value) => sum + value, 0) /
-      //   rFilmHistory.length;
+      const averageRFilm =
+        rFilmHistory.reduce((sum, value) => sum + value, 0) /
+        rFilmHistory.length;
 
-      // const ain0 = await getAin0();
-      // const ain2 = await getAin2();
-      // const ain4 = await getAin4();
-      // const ain8 = await getAin8();
+      const ain0 = await getAin0();
+      const ain2 = await getAin2();
+      const ain4 = await getAin4();
+      const ain8 = await getAin8();
       //!
 
       // получаем кадр из captureManager
@@ -89,15 +89,15 @@ export function startWSServer() {
       //!
 
       const payload = JSON.stringify({
-        // sampleTemp: ain0,
-        // airTemp: ain4,
-        // airHum: ain2,
+        sampleTemp: ain0,
+        airTemp: ain4,
+        airHum: ain2,
+        rFilm: Number(averageRFilm.toFixed(2)),
         // rFilm: ain8,
-        // rFilm: Number(averageRFilm.toFixed(2)),
-        sampleTemp: 55.5,
-        airTemp: 26.3,
-        airHum: 56.2,
-        rFilm: 50.3,
+        // sampleTemp: 55.5,
+        // airTemp: 26.3,
+        // airHum: 56.2,
+        // rFilm: 50.3,
         oscilloscope,
       });
 
