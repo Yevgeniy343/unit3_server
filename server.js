@@ -20,7 +20,13 @@ setInterval(() => {
   const frame = getLastFrame();
 
   if (frame) {
-    console.log(frame.length);
+    // console.log(frame.length);
+    const frame = getLastFrame();
+
+    if (frame) {
+      console.log("length:", frame.length);
+      console.log("first 16 bytes:", [...frame.slice(0, 16)]);
+    }
   }
 }, 1000);
 
