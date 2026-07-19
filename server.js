@@ -27,6 +27,19 @@ setInterval(() => {
       console.log("length:", frame.length);
       console.log("first 16 bytes:", [...frame.slice(0, 16)]);
     }
+
+    let prev = null;
+
+    setInterval(() => {
+      const frame = getLastFrame();
+      if (!frame) return;
+
+      const same = prev && Buffer.compare(prev, frame) === 0;
+
+      console.log("same:", same);
+
+      prev = Buffer.from(frame);
+    }, 1000);
   }
 }, 1000);
 
