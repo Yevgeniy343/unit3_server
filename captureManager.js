@@ -35,10 +35,21 @@ export function getFrameNumber() {
 function startMockCapture() {
   console.log("Capture source: MOCK");
 
+  //   mockTimer = setInterval(() => {
+  //     frameNumber++;
+  //     lastFrame = createMockFrame(frameNumber);
+  //   }, 20);
+
   mockTimer = setInterval(() => {
-    frameNumber++;
-    lastFrame = createMockFrame(frameNumber);
-  }, 20);
+    try {
+      frameNumber++;
+      lastFrame = createMockFrame(frameNumber);
+
+      console.log(frameNumber, lastFrame.length);
+    } catch (err) {
+      console.error(err);
+    }
+  }, 1000);
 }
 
 /* -------------------------------------------------- */
@@ -103,7 +114,19 @@ function startRealCapture() {
 /* Shutdown */
 /* -------------------------------------------------- */
 
+// function shutdown() {
+//   if (mockTimer) {
+//     clearInterval(mockTimer);
+//   }
+
+//   if (captureProcess) {
+//     captureProcess.kill("SIGTERM");
+//   }
+// }
+
 function shutdown() {
+  console.log("Shutting down...");
+
   if (mockTimer) {
     clearInterval(mockTimer);
   }
@@ -111,7 +134,12 @@ function shutdown() {
   if (captureProcess) {
     captureProcess.kill("SIGTERM");
   }
+
+  process.exit(0);
 }
+
+process.on("SIGINT", shutdown);
+process.on("SIGTERM", shutdown);
 
 process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
