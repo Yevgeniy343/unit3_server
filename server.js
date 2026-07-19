@@ -34,19 +34,19 @@ setInterval(() => {
     channel2.push(frame[i + 1]);
   }
 
-  console.log("==================================");
-  console.log("Размер кадра:", frame.length);
+  // console.log("==================================");
+  // console.log("Размер кадра:", frame.length);
 
-  console.log("CH1:", channel1.slice(0, 16));
-  console.log("CH2:", channel2.slice(0, 16));
+  // console.log("CH1:", channel1.slice(0, 16));
+  // console.log("CH2:", channel2.slice(0, 16));
 
-  console.log("CH1 диапазон:", getMinMax(channel1));
-  console.log("CH2 диапазон:", getMinMax(channel2));
+  // console.log("CH1 диапазон:", getMinMax(channel1));
+  // console.log("CH2 диапазон:", getMinMax(channel2));
 
-  console.log(
-    "Кадр изменился:",
-    prevFrame ? !prevFrame.equals(frame) : "первый кадр",
-  );
+  // console.log(
+  //   "Кадр изменился:",
+  //   prevFrame ? !prevFrame.equals(frame) : "первый кадр",
+  // );
 
   prevFrame = Buffer.from(frame);
 }, 1000);
