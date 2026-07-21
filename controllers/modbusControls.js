@@ -16,6 +16,15 @@ function floatToRegistersLH(value) {
   return [buf.readUInt16BE(2), buf.readUInt16BE(0)];
 }
 
+function registersToInt32LH(lo, hi) {
+  const buf = Buffer.allocUnsafe(4);
+
+  buf.writeUInt16BE(hi, 0);
+  buf.writeUInt16BE(lo, 2);
+
+  return buf.readInt32BE(0);
+}
+
 /* ================== INPUT ================== */
 export async function getAin0() {
   const { data } = await modbusQ.run(
@@ -43,7 +52,7 @@ export async function getAin4() {
 
 export async function getAin6() {
   const { data } = await modbusQ.run(
-    () => client.readInputRegisters(REG.INPUT.AIN6, 2),
+    () => client.registersToInt32LH(REG.INPUT.AIN6, 2),
     { label: "getAin6" },
   );
   return registersToFloatLH(data[0], data[1]);
