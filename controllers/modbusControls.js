@@ -41,6 +41,14 @@ export async function getAin4() {
   return registersToFloatLH(data[0], data[1]);
 }
 
+export async function getAin6() {
+  const { data } = await modbusQ.run(
+    () => client.readInputRegisters(REG.INPUT.AIN6, 2),
+    { label: "getAin6" },
+  );
+  return registersToFloatLH(data[0], data[1]);
+}
+
 export async function getAin8() {
   const { data } = await modbusQ.run(
     () => client.readInputRegisters(REG.INPUT.AIN8, 2),

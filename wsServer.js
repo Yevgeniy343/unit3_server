@@ -4,6 +4,7 @@ import {
   getAin0,
   getAin2,
   getAin4,
+  getAin6,
   getAin8,
 } from "./controllers/modbusControls.js";
 
@@ -17,6 +18,7 @@ export function startWSServer() {
 
   // Последние 10 значений rFilm
   const rFilmHistory = [];
+  const strokeLengthHistory = [];
 
   console.log(`📡 WS server started on ws://localhost:${WS_PORT}`);
 
@@ -32,25 +34,38 @@ export function startWSServer() {
 
   setInterval(async () => {
     if (clients.size === 0) return;
-    console.log("setInterval");
 
     try {
       //!
-      const currentRFilm = await getAin8();
-      rFilmHistory.push(currentRFilm);
+      // const currentRFilm = await getAin8();
+      // rFilmHistory.push(currentRFilm);
 
-      if (rFilmHistory.length > 10) {
-        rFilmHistory.shift();
-      }
+      // if (rFilmHistory.length > 10) {
+      //   rFilmHistory.shift();
+      // }
 
-      const averageRFilm =
-        rFilmHistory.reduce((sum, value) => sum + value, 0) /
-        rFilmHistory.length;
+      // const averageRFilm =
+      //   rFilmHistory.reduce((sum, value) => sum + value, 0) /
+      //   rFilmHistory.length;
 
-      const ain0 = await getAin0();
-      const ain2 = await getAin2();
-      const ain4 = await getAin4();
-      const ain8 = await getAin8();
+      //
+
+      // const currentStrokeLength = await getAin6();
+      // strokeLengthHistory.push(currentStrokeLength);
+
+      // if (strokeLengthHistory.length > 20) {
+      //   strokeLengthHistory.shift();
+      // }
+
+      // const averageStrokeLength =
+      //   strokeLengthHistory.reduce((sum, value) => sum + value, 0) /
+      //   strokeLengthHistory.length;
+
+      // const ain0 = await getAin0();
+      // const ain2 = await getAin2();
+      // const ain4 = await getAin4();
+      // const ain6 = await getAin6();
+      // const ain8 = await getAin8();
       //!
 
       // получаем кадр из captureManager
@@ -90,15 +105,20 @@ export function startWSServer() {
 
       const payload = JSON.stringify({
         sampleTemp: ain0,
-        airTemp: ain4,
         airHum: ain2,
+        airTemp: ain4,
+        strokeLength: Number(averageStrokeLength.toFixed(2)),
         rFilm: Number(averageRFilm.toFixed(2)),
-        // rFilm: ain8,
-        // sampleTemp: 55.5,
+
+        // sampleTemp: 60,
         // airTemp: 26.3,
         // airHum: 56.2,
+        // strokeLength: 410000,
         // rFilm: 50.3,
-        oscilloscope,
+        // oscilloscope,
+
+        // strokeLength: ain6,
+        // rFilm: ain8,
       });
 
       console.log("payload:", payload);

@@ -8,6 +8,7 @@ export const REG = {
     AIN0: 0,
     AIN2: 2,
     AIN4: 4,
+    AIN6: 6,
     AIN8: 8,
   },
   COIL: {
