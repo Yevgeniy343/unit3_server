@@ -9,7 +9,7 @@ import {
   getAin10,
 } from "./controllers/modbusControls.js";
 
-import { getLastFrame } from "./captureManager.js"; //!
+// import { getLastFrame } from "./captureManager.js"; //!
 
 const WS_PORT = 8080;
 
@@ -68,40 +68,39 @@ export function startWSServer() {
       // const ain10 = await getAin10();
       //!
 
-      // получаем кадр из captureManager
-      const frame = getLastFrame();
-      console.log(frame ? frame.length : "frame = null");
+      //! получаем кадр из captureManager (отключено)
+      // const frame = getLastFrame();
 
-      let oscilloscope = null;
+      // let oscilloscope = null;
 
-      if (frame) {
-        let ch1Min = 255;
-        let ch1Max = 0;
-        let ch2Min = 255;
-        let ch2Max = 0;
+      // if (frame) {
+      //   let ch1Min = 255;
+      //   let ch1Max = 0;
+      //   let ch2Min = 255;
+      //   let ch2Max = 0;
 
-        for (let i = 0; i < frame.length; i += 2) {
-          const ch1 = frame[i];
-          const ch2 = frame[i + 1];
+      //   for (let i = 0; i < frame.length; i += 2) {
+      //     const ch1 = frame[i];
+      //     const ch2 = frame[i + 1];
 
-          if (ch1 < ch1Min) ch1Min = ch1;
-          if (ch1 > ch1Max) ch1Max = ch1;
+      //     if (ch1 < ch1Min) ch1Min = ch1;
+      //     if (ch1 > ch1Max) ch1Max = ch1;
 
-          if (ch2 < ch2Min) ch2Min = ch2;
-          if (ch2 > ch2Max) ch2Max = ch2;
-        }
+      //     if (ch2 < ch2Min) ch2Min = ch2;
+      //     if (ch2 > ch2Max) ch2Max = ch2;
+      //   }
 
-        oscilloscope = {
-          channel1: {
-            min: ch1Min,
-            max: ch1Max,
-          },
-          channel2: {
-            min: ch2Min,
-            max: ch2Max,
-          },
-        };
-      }
+      //   oscilloscope = {
+      //     channel1: {
+      //       min: ch1Min,
+      //       max: ch1Max,
+      //     },
+      //     channel2: {
+      //       min: ch2Min,
+      //       max: ch2Max,
+      //     },
+      //   };
+      // }
       //!
 
       const payload = JSON.stringify({
@@ -110,15 +109,17 @@ export function startWSServer() {
         // airTemp: ain4,
         // strokeLength: Number(averageStrokeLength.toFixed(2)),
         // rFilm: Number(averageRFilm.toFixed(2)),
-        // friction: ain10 / 7056,
+        // friction: ain10,
 
-        sampleTemp: 50,
+        sampleTemp: 58.6,
         airTemp: 26.3,
         airHum: 56.2,
         strokeLength: 410000,
         rFilm: 68.3,
         friction: 0.5,
-        oscilloscope,
+        friction: 2443451,
+
+        // oscilloscope,
 
         // strokeLength: ain6,
         // rFilm: ain8,

@@ -114,16 +114,6 @@ function startRealCapture() {
 /* Shutdown */
 /* -------------------------------------------------- */
 
-// function shutdown() {
-//   if (mockTimer) {
-//     clearInterval(mockTimer);
-//   }
-
-//   if (captureProcess) {
-//     captureProcess.kill("SIGTERM");
-//   }
-// }
-
 function shutdown() {
   console.log("Shutting down...");
 
@@ -148,15 +138,16 @@ process.on("SIGTERM", shutdown);
 /* Start */
 /* -------------------------------------------------- */
 
-switch (CAPTURE_SOURCE) {
-  case "mock":
-    startMockCapture();
-    break;
+//! запуск источника захвата данных
+// switch (CAPTURE_SOURCE) {
+//   case "mock":
+//     startMockCapture();
+//     break;
 
-  case "hantek":
-    startRealCapture();
-    break;
+//   case "hantek":
+//     startRealCapture();
+//     break;
 
-  default:
-    throw new Error(`Unknown capture source: ${CAPTURE_SOURCE}`);
-}
+//   default:
+//     throw new Error(`Unknown capture source: ${CAPTURE_SOURCE}`);
+// }
