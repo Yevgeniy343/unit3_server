@@ -52,10 +52,11 @@ export async function getAin4() {
 
 export async function getAin6() {
   const { data } = await modbusQ.run(
-    () => client.registersToInt32LH(REG.INPUT.AIN6, 2),
+    () => client.readInputRegisters(REG.INPUT.AIN6, 2),
     { label: "getAin6" },
   );
-  return registersToFloatLH(data[0], data[1]);
+
+  return registersToInt32LH(data[0], data[1]);
 }
 
 export async function getAin8() {
@@ -64,6 +65,15 @@ export async function getAin8() {
     { label: "getAin8" },
   );
   return registersToFloatLH(data[0], data[1]);
+}
+
+export async function getAin10() {
+  const { data } = await modbusQ.run(
+    () => client.readInputRegisters(REG.INPUT.AIN10, 2),
+    { label: "getAin10" },
+  );
+
+  return registersToInt32LH(data[0], data[1]);
 }
 
 /* ================== COIL ================== */
